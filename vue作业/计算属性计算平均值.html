@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="js/jQuery3.4.1.js"></script>
+		<script src="js/vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<div>{{page}}  与 {{nam}} 的平均值为：{{fun}}</div>
+			
+		</div>
+		<script type="text/javascript">
+			var app = new Vue({
+				el:"#app",
+				data:{
+					page: 10,
+					nam: 20,
+					sum: 30
+				},
+				methods:{
+					
+				},
+				//计算函数
+				computed:{
+					fun: function(){
+						console.log((this.page+this.nam)/2);
+						return (this.page+this.nam)/2;
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
