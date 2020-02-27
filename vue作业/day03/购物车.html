@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="../js/jQuery3.4.1.js"></script>
+		<script src="../js/vue.js"></script>
+		<style>
+			.mytable{width: 400px; border-collapse: collapse;}
+			.mytable tr td,.mytable tr th{border:1px solid green;}
+			#btn{text-align: center;}
+			.zj{margin-top: 50px;}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<table class="mytable">
+				<tr>
+					<th>商品名称</th>
+					<th>商品价格</th>
+					<th>商品数量</th>
+					<th>操作</th>
+				</tr>
+				<tr id="btn" v-for="(item,index) in phoneArr" :key="item.name">
+					<td>{{item.name}}</td>
+					<td>{{item.price}}</td>
+					<td id="number"><button @click="jchu(item)">-</button>{{item.num}}<button @click="jiayi(item)">+</button></td>
+					<td><button @click="jiaru(item)">加入购物车</button></td>
+				</tr>
+			</table>
+			
+			<h3>购物车</h3>
+			
+			<table class="mytable">
+				<tr>
+					<th>商品名称</th>
+					<th>商品价格</th>
+					<th>商品数量</th>
+					<th>操作</th>
+				</tr>
+				<tr id="btn" v-for="(item,index) in cartList" :key="item.name">
+					<td>{{item.name}}</td>
+					<td>{{item.price}}</td>
+					<td>{{item.num}}</td>
+					<td><button @click="yichu(item)">移出购物车</button></td>
+					
+				</tr>
+			</table>
+			<div class="zj">总价为：{{TotalPrice}}</div>
+		</div>
+		<script type="text/javascript">
+			/*
+			需求：1.渲染购物车列表
+			2.每种商品的加一、减一操作
+			3.添加购物车的功能
+			4.购物车中的商品删除
+			5.计算总价*/
+			var vm = new Vue({
+				el:"#app",
+				data:{
+					phoneArr:[
+						{"id":0,"name":"iphone X","price":5000,num:0},
+						{"id":1,"name":"三星手机","price":4040,num:0},
+						{"id":2,"name":"小米","price":2000,num:0},
+						{"id":3,"name":"oppo","price":1080,num:0}
+					],
+					cartList:[],
+					TotalPrice:0,
+					show:true
+				},
+				methods:{
+					//加一
+					jiayi:function(item){
+						item.num++;
+						//价格相加就OK了 
+						this.TotalPrice += item.price;
+						console.log(this.TotalPrice);
+						
+					},
+					jchu: function(item){
+						if(item.num>=1){
+							item.num--;
+						}
+					},
+					//添加购物车的功能
+					jiaru: function(item){
+							//相同商品ip不可以重复添加
+							this.cartList.push(this.phoneArr[item.id]);
+					},
+					//移出
+					yichu: function(item){
+						this.cartList.splice(this.cartList[item.id],1);
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

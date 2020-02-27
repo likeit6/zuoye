@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        body {
+            height: 2000px;
+            background: lightcoral;
+        }
+
+        .top {
+            width: 50px;
+            height: 50px;
+            background: #6495ED;
+            border-radius: 50%;
+            border: 1px solid skyblue;
+            position: fixed;
+            bottom: 10px;
+            right: 50px;
+            color: yellow;
+            text-align: center;
+            line-height: 50px;
+            display: none;
+        }
+		.btn{margin: 300px;}
+
+    </style>
+</head>
+<body>
+<div class="btn">这是顶部,往下划出现按钮</div>
+
+<div class="top">↑</div>
+<script>
+    window.onload = function () {
+        //获取节点
+        var oBox = document.getElementsByClassName('top')[0];
+        var ro = 0;
+        var timer = null;
+        //绑定滚动事件 onscroll
+        window.onscroll = function () {
+            //获取滚动的距离
+            var top = document.documentElement.scrollTop;
+            if (top >= 300) {
+                oBox.style.display = 'block';
+                timer = setInterval(function () {
+                    if (ro < 70) {
+                        ro += 5;
+                        oBox.style.bottom = ro + 'px';
+                    } else {
+                        clearInterval(timer);
+                    }
+                }, 500);
+            } else {
+                oBox.style.display = 'none';
+                ro = 0;
+            }
+        };
+        //绑定点击事件
+        oBox.onclick = function () {
+            document.documentElement.scrollTop = 0;
+        }
+    };
+</script>
+</body>
+</html>
