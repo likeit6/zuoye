@@ -25,7 +25,7 @@
 					<td>{{item.name}}</td>
 					<td>{{item.price}}</td>
 					<td id="number"><button @click="jchu(item)">-</button>{{item.num}}<button @click="jiayi(item)">+</button></td>
-					<td><button @click="jiaru(item)">加入购物车</button></td>
+					<td><button @click="addToCart(item)">加入购物车</button></td>
 				</tr>
 			</table>
 			
@@ -83,9 +83,38 @@
 						}
 					},
 					//添加购物车的功能
-					jiaru: function(item){
-							//相同商品ip不可以重复添加
-							this.cartList.push(this.phoneArr[item.id]);
+					addToCart:function(item){
+						console.log(82);
+						//将 item 的数据拷贝到 good中
+						var good = JSON.parse( JSON.stringify(item));
+						console.log(good);
+						//判断购物车中是否有该商品
+						var hasOne = false;//购物车中没这种该商品
+						if(this.cartList.length){
+							console.log(87);
+							//遍历购物车中是否有该商品
+							for(var i = 0;i<this.cartList.length;i++){
+								//判断购物车中是否有这种商品的名称
+								if(good.name != this.cartList[i].name){
+									hasOne = true;
+								}else{
+									hasOne = false;
+									//更改 该种商品的数量，数量增加
+									this.cartList[i].num += good.num;
+									break;
+								}
+							}
+							
+							//判断是否存在该商品
+							if(hasOne){
+								console.log(90);
+								this.cartList.push(good);
+							}
+							
+						}else{
+							console.log("购物车为空");
+							this.cartList.push(good);
+						}
 					},
 					//移出
 					yichu: function(item){
