@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<!-- 图片加载 -->
+		<meta name="referrer" content="no-referrer" />
+		<!-- 视口 -->
+		<meta name="viewport" content="width=device-width" />
+		<script type="text/javascript" src="../js/vue.js"></script>
+		<script src="../js/axios.min.js" type="text/javascript" charset="utf-8"></script>
+		<style>
+		    * {
+		        padding: 0;
+		        margin: 0;
+		    }
+		
+		    ul, li {
+		        list-style: none;
+		    }
+		
+		    #root li {
+		        display: flex;
+		        flex-direction: row;
+		        flex-wrap: nowrap;
+		        justify-content: space-around;
+		        margin: 2%;
+		    }
+		
+		    #root li .div1 {
+		        width: 40%;
+		    }
+		
+		    #root li .div1 img {
+		        width: 100%;
+		    }
+		
+		    #root li .div2 {
+		        width: 60%;
+		        margin-left: 18px;
+		    }
+		
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<child :filmarr="houliaoList"></child>
+		</div>
+		<script type="text/javascript">
+			//组件
+			var child = {
+				props:['filmarr'],
+				template:`
+				<div>
+				<ul id="root">
+				<li v-for="(item,index) in filmarr">
+				<div class="div1"><img :src="item.proPicUrl" alt=""></div>
+				<div class="div2">
+				<div class="proTitle">{{item.proTitle}}</div>
+				<div class="country"> 位置：{{item.country}}</div>
+				<div>住：{{item.routingDat}}天{{item.routingNigth}}晚 价格：{{item.amount}}起</div>
+				</div>
+				</li>
+				</ul>
+				</div>
+				`
+			}
+			
+			
+			/*******************************/
+			var vm = new Vue({
+				el:"#app",
+				data:{
+					houliaoList:[]
+				},
+				mounted:function(){
+					//国产
+					axios.get('json/houliao.json').then((data)=>{//成功获取数据的回调函数
+						console.log(data);
+						console.log(data.data);
+						this.houliaoList = data.data;
+						console.log(this.houliaoList);
+					}).catch((error)=>{//失败的回调函数
+						console.log(error);
+					})
+					},
+				components:{
+					child
+				}
+			})
+		</script>
+	</body>
+</html>
