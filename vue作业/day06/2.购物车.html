@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="../js/jQuery3.4.1.js"></script>
+		<script src="../js/vue.js"></script>
+		<script src="//unpkg.com/element-ui@2.13.0/lib/index.js"></script>
+		<style type="text/css">
+			@import url("//unpkg.com/element-ui@2.13.0/lib/theme-chalk/index.css");
+		</style>
+		<style>
+			.mytable{width: 400px; border-collapse: collapse;}
+			.mytable tr td,.mytable tr th{border:1px solid green;}
+			#btn{text-align: center;}
+			.zj{margin-top: 50px;}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<table class="mytable">
+				<tr>
+					<th>商品名称</th>
+					<th>商品价格</th>
+					<th>商品数量</th>
+					<th>操作</th>
+				</tr>
+				<tr id="btn" v-for="(item,index) in phoneArr" :key="item.name">
+					<td>{{item.name}}</td>
+					<td>{{item.price}}</td>
+					<td id="number"><button @click="jchu(item)">-</button>{{item.num}}<button @click="jiayi(item)">+</button></td>
+					<td><button @click="addToCart(item)">加入购物车</button></td>
+				</tr>
+			</table>
+			
+			<h3>购物车</h3>
+			
+			<table class="mytable">
+				<tr>
+					<th>商品名称</th>
+					<th>商品价格</th>
+					<th>商品数量</th>
+					<th>操作</th>
+				</tr>
+				<tr id="btn" v-for="(item,index) in cartList" :key="item.name">
+					<td>{{item.name}}</td>
+					<td>{{item.price}}</td>
+					<td>{{item.num}}</td>
+					<td><button @click="post(cartList,index)">移出购物车</button></td>
+					
+				</tr>
+			</table>
+			<div class="zj">总价为：{{TotalPrice}}</div>
+		</div>
+		<script type="text/javascript">
+			//mixin混入
+			var mixindel = {
+				methods:{
+					post:function(arr,index){
+						arr.splice(index,1);
+						this.$message({
+						    message: '您已删除一条商品！',
+						    type: 'success',
+							duration:500
+						});
+						
+					}
+				}
+			}
+			
+			
+			var vm = new Vue({
+				el:"#app",
+				data:{
+					phoneArr:[
+						{"id":0,"name":"iphone X","price":5000,num:1},
+						{"id":1,"name":"三星手机","price":4040,num:1},
+						{"id":2,"name":"小米","price":2000,num:1},
+						{"id":3,"name":"oppo","price":1080,num:1}
+					],
+					cartList:[],
+					TotalPrice:0,
+					show:true
+				},
+				//mixmin局部需引入，不能在后面引入
+				mixins:[mixindel],
+				methods:{
+					//加一
+					jiayi:function(item){
+						item.num++;
+						//价格相加就OK了 
+						this.TotalPrice += item.price;
+						console.log(this.TotalPrice);
+						
+					},
+					jchu: function(item){
+						if(item.num>=1){
+							item.num--;
+						}
+					},
+					//添加购物车的功能
+					addToCart:function(item){
+						console.log(82);
+						//将 item 的数据拷贝到 good中
+						var good = JSON.parse( JSON.stringify(item));
+						console.log(good);
+						//判断购物车中是否有该商品
+						var hasOne = false;//购物车中没这种该商品
+						if(this.cartList.length){
+							console.log(87);
+							//遍历购物车中是否有该商品
+							for(var i = 0;i<this.cartList.length;i++){
+								//判断购物车中是否有这种商品的名称
+								if(good.name != this.cartList[i].name){
+									hasOne = true;
+								}else{
+									hasOne = false;
+									//更改 该种商品的数量，数量增加
+									this.cartList[i].num += good.num;
+									break;
+								}
+							}
+							
+							//判断是否存在该商品
+							if(hasOne){
+								console.log(90);
+								this.cartList.push(good);
+							}
+							
+						}else{
+							console.log("购物车为空");
+							this.cartList.push(good);
+						}
+					}
+					
+					//移出
+					// yichu: function(item){
+					// 	this.cartList.splice(this.cartList[item.id],1);
+					// }
+				}
+			})
+		</script>
+	</body>
+</html>
