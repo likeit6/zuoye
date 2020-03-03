@@ -40,8 +40,9 @@
 		
 		<!--模板-->
 		<script type="text/template" id="myDialog">
-			<div class="myDialog" v-if="visible">
-				<div id="dialogMain" :style="{'width':width}" >
+			<div class="myDialog" v-if="visible" @click="hiddenM">
+			// @click.stop 阻止冒泡  白色部分点击不退出
+				<div id="dialogMain" :style="{'width':width}" @click.stop>
 					<div id="dialogHeader">
 						<span>{{title}}</span>
 						<span @click="hiddenM">×</span>
@@ -65,10 +66,8 @@
 					hiddenM:function(){
 						//将子组件的模态框的状态值传递给 父组件
 						this.$emit('update:visible');
-					},
-					quxi:function(visible){
-						this.visible = false;
 					}
+				
 				}
 			});
 			/***************************************************/
